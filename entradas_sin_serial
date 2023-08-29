@@ -1,0 +1,8 @@
+-- Entrada
+SELECT T0.[IdTransferencia] AS [ID], 
+T0.[NumeroTransferencia], 
+T0.[FechaRegistro] AS [FECHA],  
+[Cod_Area] Origen, T0.[Cod_AreaDestino] Destino, 'ENTRADA' AS [DOCUMENTO] 
+FROM [DB_SRM].[TransferenciasSucursales] T0 INNER JOIN 
+[DB_SRM].[Transferencias] T1 ON T0.IdTransferencia = T1.IdTransferencia WHERE  T1.[IdEstatusMigracion] = 0 
+and Cod_Area = 'CDD'
