@@ -32,11 +32,11 @@ FROM     [ERP_POS].[Facturas] T0 INNER JOIN
 SELECT DISTINCT T0.[IdTransferencia] AS [ID], 
 T0.[NumeroTransferencia],
 T0.[FechaRegistro] AS [FECHA],  
-T2.IdTransferenciaSucursalDetalle,
-[Cod_Area] Origen, T0.[Cod_AreaDestino] Destino, 'ENTRADA' AS [DOCUMENTO] 
-,T3.Cod_Producto
+[Cod_Area] Origen, 
+T0.[Cod_AreaDestino] Destino
+, 'ENTRADA' AS [DOCUMENTO] 
 ,t2.CantidadEnviada
-,t1.Cod_Area
+,t2.CantidadRecibida
 FROM [DB_SRM].[TransferenciasSucursales] T0 
 INNER JOIN [DB_SRM].[Transferencias] T1 ON T0.IdTransferencia = T1.IdTransferencia 
 INNER join [DB_SRM].[TransferenciasSucursalesDetalle] T2 ON T0.IdTransferenciaSucursal = T2.IdTransferenciaSucursal 
@@ -47,10 +47,10 @@ WHERE  T1.[IdEstatusMigracion] IN(0,3) and Cod_Area = 'CDD'  and t0.Cod_Transfer
 SELECT  T0.[IdTransferencia] AS [ID], 
 T0.[NumeroTransferencia],
 T0.[FechaRegistro] AS [FECHA],  
-[Cod_Area] Origen, T0.[Cod_AreaDestino] Destino, 'ENTRADA' AS [DOCUMENTO]
+[Cod_Area] Origen, 
+T0.[Cod_AreaDestino] Destino, 'ENTRADA' AS [DOCUMENTO]
 ,T3.Serial
 ,T3.Cod_Producto
-,t1.Cod_Area
 FROM [DB_SRM].[TransferenciasSucursales] T0 
 INNER JOIN [DB_SRM].[Transferencias] T1 ON T0.IdTransferencia = T1.IdTransferencia 
 INNER join [DB_SRM].[TransferenciasSucursalesDetalle] T2 ON T0.IdTransferenciaSucursal = T2.IdTransferenciaSucursal 
@@ -60,14 +60,13 @@ WHERE  T1.[IdEstatusMigracion] IN(0,3) and Cod_Area = 'CDD'  and t0.Cod_Transfer
 --DEVOLUCIONES 
 
 --CANTIDAD
-SELECT DISTINCT T0.[IdTransferencia] AS [ID], 
+SELECT DISTINCT T0.[IdTransferencia],
+t1.Cod_SucursalOrigen,
 T0.[NumeroTransferencia],
-T0.[FechaRegistro] AS [FECHA],  
-T2.IdTransferenciaSucursalDetalle,
-[Cod_Area] Origen, T0.[Cod_AreaDestino] Destino, 'DEVOLUCIONES' AS [DOCUMENTO] 
-,T3.Cod_Producto
-,t2.CantidadEnviada
-,t1.Cod_Area
+T3.Cod_Producto,
+T1.FechaCreacion,  
+t2.CantidadEnviada
+,t2.CantidadRecibida
 FROM [DB_SRM].[TransferenciasSucursales] T0 
 INNER JOIN [DB_SRM].[Transferencias] T1 ON T0.IdTransferencia = T1.IdTransferencia 
 INNER join [DB_SRM].[TransferenciasSucursalesDetalle] T2 ON T0.IdTransferenciaSucursal = T2.IdTransferenciaSucursal 
@@ -75,13 +74,13 @@ INNER join   [DB_SRM].[TransferenciasSucursalesDetalleSeriales] T3 ON T2.IdTrans
 WHERE  T1.[IdEstatusMigracion] IN(0,3) and Cod_Area != 'CDD'  and t0.Cod_Transferencia = -1 
 
 --SERIAL
-SELECT  T0.[IdTransferencia] AS [ID], 
+SELECT  T0.[IdTransferencia],
+t0.Cod_SucursalDestino,
 T0.[NumeroTransferencia],
-T0.[FechaRegistro] AS [FECHA],  
-[Cod_Area] Origen, T0.[Cod_AreaDestino] Destino, 'DEVOLCIONES' AS [DOCUMENTO]
-,T3.Serial
-,T3.Cod_Producto
-,t1.Cod_Area
+T3.Cod_Producto,
+T3.Serial,
+t1.FechaCreacion
+,t0.Cod_AreaDestino
 FROM [DB_SRM].[TransferenciasSucursales] T0 
 INNER JOIN [DB_SRM].[Transferencias] T1 ON T0.IdTransferencia = T1.IdTransferencia 
 INNER join [DB_SRM].[TransferenciasSucursalesDetalle] T2 ON T0.IdTransferenciaSucursal = T2.IdTransferenciaSucursal 
