@@ -25,4 +25,23 @@ as
 		SELECT [IdFactura] AS [ID], [Fecha] AS [FECHA], 'NOTAC' AS [DOCUMENTO]
 		FROM     [ERP_POS].[Facturas]
 		WHERE  [MontoTotal] < 0 AND [IdEstatusMigracion] = 0
+
+	        --LO DIARIO
+                /*
+	        SELECT [IdTransferencia] AS [ID], [FechaCreacion] AS [FECHA], 'ENTRADA' AS [DOCUMENTO]
+		FROM     [DB_SRM].[Transferencias]
+		WHERE  [IdEstatusMigracion] = 0 and [Cod_Area] = 'CDD' and CAST([FechaCreacion] as date) = '2023-09-01'
+		UNION ALL
+		SELECT [IdTransferencia] AS [ID], [FechaCreacion] AS [FECHA], 'DEVOLUCION' AS [DOCUMENTO]
+		FROM     [DB_SRM].[Transferencias]
+		WHERE  [IdEstatusMigracion] = 0 and [Cod_Area] <> 'CDD' and CAST([FechaCreacion] as date) = '2023-09-01'
+		UNION ALL
+		SELECT [IdFactura] AS [ID], [Fecha] AS [FECHA], 'FACTURA' AS [DOCUMENTO]
+		FROM     [ERP_POS].[Facturas]
+		WHERE  [MontoTotal] > 0 AND [IdEstatusMigracion] = 0 and CAST([Fecha] as date) = '2023-09-01'
+		UNION ALL
+		SELECT [IdFactura] AS [ID], [Fecha] AS [FECHA], 'NOTAC' AS [DOCUMENTO]
+		FROM     [ERP_POS].[Facturas]
+		WHERE  [MontoTotal] < 0 AND [IdEstatusMigracion] = 0 and CAST([Fecha] as date) = '2023-09-01';
+                */
 GO
