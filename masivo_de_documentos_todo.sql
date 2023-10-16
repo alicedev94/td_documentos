@@ -1,13 +1,13 @@
 --FACTURAS
 SELECT
 t0.IdFactura, t0.Cod_Area, t0.IdSucursal, t0.CajaFactura, t1.Cod_Producto,
-t0.Fecha , [Serial], Cod_Area, 'FACTURA' AS [DOCUMENTO] FROM    
+t0.Fecha , [Serial], Cod_Area, cedula, 'FACTURA' AS [DOCUMENTO] FROM    
 [ERP_POS].[Facturas] T0 INNER JOIN [ERP_POS].[DetalleFacturas] T1 ON
 T0.IdFactura = T1.IdFactura WHERE  [MontoTotal] > 0 AND
 T0.[IdEstatusMigracion] = 0 
 
 SELECT
-t0.CantidadProductos,t0.IdFactura, t0.Cod_Area, t0.CajaFactura, t1.Cod_Producto
+t0.CantidadProductos,t0.IdFactura, t0.Cod_Area, t0.CajaFactura , cedula, t1.Cod_Producto
 FROM     [ERP_POS].[Facturas] T0 INNER JOIN
 [ERP_POS].[DetalleFacturas] T1 ON T0.IdFactura = T1.IdFactura WHERE
  [MontoTotal] > 0 AND T0.[IdEstatusMigracion] = 0 
@@ -15,13 +15,13 @@ FROM     [ERP_POS].[Facturas] T0 INNER JOIN
 --NOTA DE CREDITO
 SELECT
 t0.IdFactura, t0.Cod_Area, t0.IdSucursal, t0.CajaFactura, t1.Cod_Producto,
-t0.Fecha , [Serial], Cod_Area, 'NOTAC' AS [DOCUMENTO], CajaFacturaAfectada FROM    
+t0.Fecha , [Serial], Cod_Area, 'NOTAC' AS [DOCUMENTO], cedula, CajaFacturaAfectada FROM    
 [ERP_POS].[Facturas] T0 INNER JOIN [ERP_POS].[DetalleFacturas] T1 ON
 T0.IdFactura = T1.IdFactura WHERE  [MontoTotal] < 0 AND
 T0.[IdEstatusMigracion] = 0 
 
 SELECT
-t0.CantidadProductos,t0.IdFactura, t0.Cod_Area, t0.CajaFactura, t1.Cod_Producto, CajaFacturaAfectada
+t0.CantidadProductos,t0.IdFactura, t0.Cod_Area, t0.CajaFactura, t1.Cod_Producto , cedula, CajaFacturaAfectada
 FROM     [ERP_POS].[Facturas] T0 INNER JOIN
 [ERP_POS].[DetalleFacturas] T1 ON T0.IdFactura = T1.IdFactura WHERE
  [MontoTotal] < 0 AND T0.[IdEstatusMigracion] = 0
@@ -67,6 +67,7 @@ T2.Cod_Producto,
 T1.FechaCreacion,  
 t2.CantidadEnviada
 ,t2.CantidadRecibida
+,Cod_Area
 FROM [DB_SRM].[TransferenciasSucursales] T0 
 INNER JOIN [DB_SRM].[Transferencias] T1 ON T0.IdTransferencia = T1.IdTransferencia 
 INNER join [DB_SRM].[TransferenciasSucursalesDetalle] T2 ON T0.IdTransferenciaSucursal = T2.IdTransferenciaSucursal 
@@ -81,6 +82,7 @@ T3.Cod_Producto,
 T3.Serial,
 t1.FechaCreacion
 ,t0.Cod_AreaDestino
+,Cod_Area
 FROM [DB_SRM].[TransferenciasSucursales] T0 
 INNER JOIN [DB_SRM].[Transferencias] T1 ON T0.IdTransferencia = T1.IdTransferencia 
 INNER join [DB_SRM].[TransferenciasSucursalesDetalle] T2 ON T0.IdTransferenciaSucursal = T2.IdTransferenciaSucursal 
